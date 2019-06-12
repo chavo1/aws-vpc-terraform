@@ -44,6 +44,13 @@ resource "aws_security_group" "vpc_Security_Group" {
     to_port     = 22
     protocol    = "tcp"
   }
+  # allow port 443
+  ingress {
+    cidr_blocks = "${var.ingressCIDRblock}"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+  }
   # allow port 8500
   ingress {
     cidr_blocks = "${var.ingressCIDRblock}"
@@ -93,9 +100,16 @@ resource "aws_network_acl" "vpc_Security_ACL" {
     cidr_block = "${var.destinationCIDRblock}"
     from_port  = 22
     to_port    = 22
-
   }
-
+  # allow ingress ephemeral ports 
+  ingress {
+    protocol   = "tcp"
+    rule_no    = 102
+    action     = "allow"
+    cidr_block = "${var.destinationCIDRblock}"
+    from_port  = 443
+    to_port    = 443
+  }
   # allow ingress ephemeral ports 
   ingress {
     protocol   = "tcp"
@@ -105,15 +119,14 @@ resource "aws_network_acl" "vpc_Security_ACL" {
     from_port  = 1024
     to_port    = 65535
   }
-
   # allow egress ephemeral ports
   egress {
-    protocol   = "tcp"
+    protocol   = "-1"
     rule_no    = 100
     action     = "allow"
-    cidr_block = "${var.destinationCIDRblock}"
-    from_port  = 1024
-    to_port    = 65535
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
   }
 
   tags = {
@@ -140,6 +153,14 @@ resource "aws_route_table" "public" {
     gateway_id = "${aws_internet_gateway.vpc_gw.id}"
   }
 
+  lifecycle {
+    ignore_changes = [
+      # Ignore changes to tags, e.g. because a management agent
+      # updates these based on some ruleset managed elsewhere.
+      route,
+    ]
+  }
+
   tags = {
     Name = "VPC ${var.vpc_name} Route Table"
   }
@@ -150,5 +171,3 @@ resource "aws_route_table_association" "public" {
   subnet_id      = "${aws_subnet.vpc_subnet.id}"
   route_table_id = "${aws_route_table.public.id}"
 } # end resource
-
-
