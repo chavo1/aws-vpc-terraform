@@ -1,5 +1,5 @@
 module "vpc_virginia" {
-  source = "../"
+  source = "github.com/chavo1/aws-vpc-terraform"
 
   region               = "${var.region[0]}"
   vpc_name             = "${var.vpc_name[0]}"
@@ -11,10 +11,10 @@ module "vpc_virginia" {
   destinationCIDRblock = "${var.destinationCIDRblock}"
   availabilityZone     = "${var.availabilityZone[0]}"
   mapPublicIP          = "${var.mapPublicIP}"
-
 }
+
 module "vpc_ohio" {
-  source = "../"
+  source = "github.com/chavo1/aws-vpc-terraform"
 
   region               = "${var.region[1]}"
   vpc_name             = "${var.vpc_name[1]}"

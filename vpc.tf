@@ -157,7 +157,7 @@ resource "aws_route_table" "public" {
     ignore_changes = [
       # Ignore changes to tags, e.g. because a management agent
       # updates these based on some ruleset managed elsewhere.
-      route,
+      "route",
     ]
   }
 
