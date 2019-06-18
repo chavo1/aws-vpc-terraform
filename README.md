@@ -1,2 +1,1 @@
-# aws-vpc-terraform
-Module to deploy aws VPCs with terraform
+# Module to deploy aws VPCs with terraform
