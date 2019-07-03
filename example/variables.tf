@@ -1,8 +1,7 @@
 # variables.tf
 
-variable "region" {
-  type = "list"
-}
+variable "region" {}
+
 variable "vpc_name" {
   type = "list"
 }
