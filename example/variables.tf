@@ -3,10 +3,10 @@
 variable "region" {}
 
 variable "vpc_name" {
-  type = "list"
+  type = list(string)
 }
 variable "availabilityZone" {
-  type = "list"
+  type = list(string)
 }
 
 variable "instanceTenancy" {
@@ -22,11 +22,11 @@ variable "dnsHostNames" {
 }
 
 variable "vpcCIDRblock" {
-  type = "list"
+  type = list(string)
 }
 
 variable "subnetCIDRblock" {
-  type = "list"
+  type = list(string)
 }
 
 variable "destinationCIDRblock" {
@@ -34,7 +34,7 @@ variable "destinationCIDRblock" {
 }
 
 variable "ingressCIDRblock" {
-  type    = "list"
+  type    = list(string)
   default = ["0.0.0.0/0"]
 }
 
