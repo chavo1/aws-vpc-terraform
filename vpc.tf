@@ -1,13 +1,3 @@
-# vpc.tf 
-# Create VPC/subnet/Security Group/ACL
-
-# The default provider configuration
-provider "aws" {
-  region = var.region
-}
-
-# end provider
-
 # create the VPC
 resource "aws_vpc" "vpc" {
   cidr_block           = var.vpcCIDRblock
@@ -81,6 +71,14 @@ resource "aws_security_group" "vpc_Security_Group" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+    // Allow ICMP (ping)
+ingress {
+        description = "ping-icmp"
+        from_port   = -1
+        to_port     = -1
+        protocol    = "icmp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
 
   tags = {
     Name = "VPC Security Group"
@@ -127,6 +125,17 @@ resource "aws_network_acl" "vpc_Security_ACL" {
     cidr_block = "0.0.0.0/0"
     from_port  = 0
     to_port    = 0
+  }
+    // Allow ICMP (ping)
+  ingress {
+    rule_no    = 103
+    action     = "allow"
+    cidr_block = var.destinationCIDRblock
+    protocol = "icmp"
+    from_port = 8
+    to_port = 0
+    icmp_type = -1
+    icmp_code = -1
   }
 
   tags = {
