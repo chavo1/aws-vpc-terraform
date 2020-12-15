@@ -71,14 +71,14 @@ resource "aws_security_group" "vpc_Security_Group" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-    // Allow ICMP (ping)
-ingress {
-        description = "ping-icmp"
-        from_port   = -1
-        to_port     = -1
-        protocol    = "icmp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
+  // Allow ICMP (ping)
+  ingress {
+    description = "ping-icmp"
+    from_port   = -1
+    to_port     = -1
+    protocol    = "icmp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
   tags = {
     Name = "VPC Security Group"
@@ -88,7 +88,7 @@ ingress {
 # create VPC Network access control list
 resource "aws_network_acl" "vpc_Security_ACL" {
   vpc_id     = aws_vpc.vpc.id
-  subnet_ids = [ aws_subnet.vpc_subnet.id ]
+  subnet_ids = [aws_subnet.vpc_subnet.id]
 
   # allow port 22
   ingress {
@@ -126,16 +126,16 @@ resource "aws_network_acl" "vpc_Security_ACL" {
     from_port  = 0
     to_port    = 0
   }
-    // Allow ICMP (ping)
+  // Allow ICMP (ping)
   ingress {
     rule_no    = 103
     action     = "allow"
     cidr_block = var.destinationCIDRblock
-    protocol = "icmp"
-    from_port = 8
-    to_port = 0
-    icmp_type = -1
-    icmp_code = -1
+    protocol   = "icmp"
+    from_port  = 8
+    to_port    = 0
+    icmp_type  = -1
+    icmp_code  = -1
   }
 
   tags = {
